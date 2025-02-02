@@ -344,9 +344,65 @@ public class Main {
    
     // 43. Add or edit a Video DVD
     private static void addOrEditDVD(DVD disk) {
-        // TODO: 7. Implement this method
+        if (disk == null) { // Add DVD
+            System.out.println("== 4.3 Add New Video DVD ========= ");
+            String title = getTitle();
+            if (!title.equals("-")) {
+                DVD.Genre genre = getDVDGenre();
+                Set<String> keywords = getKeywords();
+                int length = getNumericalAnswer("Length in minutes (max: " + DVD.MAX_LENGTH + ")?", 0, DVD.MAX_LENGTH);
+                int size = getNumericalAnswer("Size in MB (max: " + DVD.MAX_SIZE + ")? ", 1, DVD.MAX_SIZE);
+                int publicationYear = getNumericalAnswer("Publication year (yyyy)? ", DVD.MIN_PUB_YEAR, Medium.MAX_PUB_YEAR);
+
+                LIBRARY.addVideoDVD(title, length, size, publicationYear, genre, keywords);
+                System.out.println("== DVD added.");
+            }
+        } else {
+            System.out.println("== 5. Edit Video DVD ========= ");
+            String title = disk.getTitle();
+            String answer = yesOrNo("Title is " + title + ". Change (y/n)? ");
+            if (answer.equalsIgnoreCase("y")) {
+                title = getTitle();
+                disk.setTitle(title);
+            }
+            // Genre
+            DVD.Genre genre = disk.getGenre();
+            answer = yesOrNo("Genre is " + genre + ". Change (y/n)? ");
+            if (answer.equalsIgnoreCase("y")) {
+                disk.setGenre(getDVDGenre());
+            }
+            // keywords
+            Set<String> keywords = disk.getKeywords();
+            answer = yesOrNo("Keywords: " + keywords.toString() + ". Change (y/n)? ");
+            if (answer.equalsIgnoreCase("y")) {
+                disk.removeAllKeywords();
+                disk.addKeywords(getKeywords());
+            }
+            // length
+            int length = disk.getLength();
+            answer = yesOrNo("Length is " + length + "'. Change (y/n)? ");
+            if (answer.equalsIgnoreCase("y")) {
+                length = getNumericalAnswer("Length in minutes (max: " + DVD.MAX_LENGTH + ")?", 1, DVD.MAX_LENGTH);
+                disk.setLength(length);
+            }
+            // size
+            int size = disk.getSize();
+            answer = yesOrNo("Size is " + size + "MB. Change (y/n)? ");
+            if (answer.equalsIgnoreCase("y")) {
+                size = getNumericalAnswer("Size in MB (max: " + DVD.MAX_SIZE + ")? ", 1, DVD.MAX_SIZE);
+                disk.setSize(size);
+            }
+            // publication date
+            int publicationYear = disk.getPublicationYear();
+            answer = yesOrNo("Publication year is " + publicationYear + ". Change (y/n)? ");
+            if (answer.equalsIgnoreCase("y")) {
+                publicationYear = getNumericalAnswer("Publication year (yyyy)? ", Medium.MIN_PUB_YEAR, Medium.MAX_PUB_YEAR);
+                disk.setPublicationYear(publicationYear);
+            }
+            System.out.println("== DVD updated.");
+        }
     }
-    
+
     // 5. Edit medium
     private static void editMedium() {
         System.out.println("== 5. Edit Medium == ");
@@ -357,9 +413,8 @@ public class Main {
                     addOrEditBook(book);
                 } else if (medium instanceof CD cd) {
                     addOrEditCD(cd);
-                // TODO: 8. Uncommment the following 2 lines and fix errors
-//                } else if (medium instanceof DVD dvd) {
-//                    addOrEditDVD(dvd);
+                } else if (medium instanceof DVD dvd) {
+                    addOrEditDVD(dvd);
                 } else if (medium instanceof Disk disk) {
                     addOrEditDataDisk(disk);
                 } else {

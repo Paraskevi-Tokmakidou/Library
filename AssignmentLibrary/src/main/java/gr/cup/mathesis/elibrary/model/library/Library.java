@@ -50,8 +50,15 @@ public final class Library implements ILibrary {
 
     @Override
     public Set<Medium> findMediaByTitle(String title) {
-        // TODO: 6. Implement this method
-        return null;
+        Set<Medium> found = new HashSet<>();
+
+        for (Medium medium : media) {
+            if (medium.getTitle().contains(title)) {
+                found.add(medium);
+            }
+        }
+
+        return found;
     }
     
     @Override
@@ -72,7 +79,13 @@ public final class Library implements ILibrary {
     
     @Override
     public boolean deleteMedia(Set<Medium> m) {
-        // TODO: 5. Implement this method
+        for (Medium medium : media) {
+            if (medium.hashCode() == m.hashCode()) {
+                media.remove(medium);
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -122,8 +135,15 @@ public final class Library implements ILibrary {
 
     @Override
     public Set<DVD> findBy(DVD.Genre genre) {
-        // TODO: 4. Implement this method
-        return null;
+        Set<DVD> found = new HashSet<>();
+        for (Medium medium : media) {
+            if (medium instanceof DVD dvd) {
+                if (dvd.getGenre() == genre) {
+                    found.add(dvd);
+                }
+            }
+        }
+        return found;
     }
 
     @Override
@@ -139,10 +159,12 @@ public final class Library implements ILibrary {
     @Override
     public DVD addVideoDVD(String title, int len, int size, int pubYear,
             DVD.Genre genre, Set<String> keywords) {
-        // TODO: 3. Implement this method
-        return null;
+        DVD dvd = new DVD(title, len, size, pubYear, genre);
+        dvd.addKeywords(keywords);
+        media.add(dvd);
+        return dvd;
     }
-    
+
     private static boolean isInvalidIsbn(long isbn) {
         return isbn < MIN_ISBN || isbn > MAX_ISBN;
     }

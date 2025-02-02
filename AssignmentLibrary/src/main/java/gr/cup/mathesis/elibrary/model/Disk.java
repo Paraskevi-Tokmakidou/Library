@@ -8,8 +8,7 @@ import java.util.Objects;
  *
  * @author mathesis
  */
-// TODO: 2. Something is missing here. Can you fix it?
-public sealed class Disk extends Medium permits CD {
+public sealed class Disk extends Medium permits CD, DVD {
 
     /** Maximum size of a double sided DVD in MB.*/
     public static final int MAX_SIZE = 9000;
