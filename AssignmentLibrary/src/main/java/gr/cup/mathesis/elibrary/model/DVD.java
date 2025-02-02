@@ -1,5 +1,7 @@
 package gr.cup.mathesis.elibrary.model;
 
+import gr.cup.mathesis.elibrary.util.Validations;
+
 /**
  * A DVD that contains one or more movies.
  *
@@ -61,7 +63,25 @@ public final class DVD extends Disk {
      * @param length the length to set
      */
     public void setLength(int length) {
-        this.length = length;
+        if (Validations.isValid(length, 0, MAX_LENGTH)) {
+            this.length = length;
+        } else {
+            throw new IllegalArgumentException("DVD length should be between 0' and " + MAX_LENGTH + "'.");
+        }
+    }
+
+    @Override
+    public void setPublicationYear(int pubYear) {
+        if (Validations.isValid(pubYear, MIN_PUB_YEAR, MAX_PUB_YEAR)) {
+            this.publicationYear = pubYear;
+        } else {
+            throw new IllegalArgumentException("Publication year should be between " + MIN_PUB_YEAR + " and " + MAX_PUB_YEAR + ".");
+        }
+    }
+
+    @Override
+    public String toShortString() {
+        return "DVD {Title: '" + getTitle() + "'}";
     }
 
     @Override
